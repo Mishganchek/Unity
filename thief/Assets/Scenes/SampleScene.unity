@@ -532,6 +532,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _alarm: {fileID: 554479684}
+  _speed: 0.1
 --- !u!82 &554479684
 AudioSource:
   m_ObjectHideFlags: 0
@@ -544,7 +545,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 519252de31e94de43b99d4c63f674521, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0
   m_Pitch: 1
   Loop: 1
   Mute: 0
