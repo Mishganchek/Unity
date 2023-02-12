@@ -6,9 +6,9 @@ public class CoinCollector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Coin coin = gameObject.GetComponent<Coin>();
+        Player player = other.gameObject.GetComponent<Player>();
 
-        if (coin != null)
+        if (player != null)
         {
             AudioSource.PlayClipAtPoint(_coinSound, transform.position);
             Destroy(gameObject);
