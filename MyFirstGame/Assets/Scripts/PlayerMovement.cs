@@ -1,7 +1,14 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(SpriteRenderer))]
+
 public class PlayerMovement : MonoBehaviour
 {
+    private const string IsOnPlatform = "isOnPlatform";
+    private const string MoveX = "moveX";
+
     [SerializeField] private float _speed = 0.5f;
     [SerializeField] private float _jumpForce = 0.5f;
     [SerializeField] private float _checRadius;
@@ -34,7 +41,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _moveVector.x = Input.GetAxis("Horizontal");
         _rigidBody.velocity = new Vector2(_moveVector.x * _speed, _rigidBody.velocity.y);
-        _animator.SetFloat("moveX", Mathf.Abs(_moveVector.x));
+        _animator.SetFloat(MoveX, Mathf.Abs(_moveVector.x));
     }
 
     private void Jump()
@@ -48,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private void PlatformChecer()
     {
         _isOnPlatform = Physics2D.OverlapCircle(_platformChecer.position, _checRadius, _platform);
-        _animator.SetBool("isOnPlatform", _isOnPlatform);
+        _animator.SetBool(IsOnPlatform, _isOnPlatform);
 
     }
 
