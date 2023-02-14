@@ -1,35 +1,37 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
     [SerializeField] private int _maxHealth;
     [SerializeField] private int _currentHealth;
-    [SerializeField] private HealthBarUI _healthBarUI;
+    [SerializeField] private HealthBar _healthBar;
+
+    public UnityEvent OnHealthChanged;
 
     private void Start()
     {
         _currentHealth = _maxHealth;
     }
 
-    private float CalculateHealth()
+    public float CalculateHealth()
     {
         return (float)_currentHealth / _maxHealth;
     }
 
-    public void ChangeHealth(int amount)
+    private void ChangeHealth(int amount)
     {
-        _currentHealth += amount;
-        _currentHealth = Mathf.Clamp(_currentHealth, 0, _maxHealth);
-        _healthBarUI.UpdateValue(CalculateHealth());
+        _currentHealth = Mathf.Clamp(_currentHealth + amount, 0, _maxHealth);
+        OnHealthChanged.Invoke();
     }
 
-    public void AddHealth()
+    public void Heal()
     {
         ChangeHealth(10);
     }
 
-    public void RemoveHealth()
+    public void Damage()
     {
         ChangeHealth(-10);
     }
