@@ -8,32 +8,30 @@ public class Player : MonoBehaviour
     [SerializeField] private int _currentHealth;
     [SerializeField] private HealthBar _healthBar;
 
-    public UnityEvent OnHealthChanged;
+    public int CurrentHealth => _currentHealth;
+    public int MaxHealth => _maxHealth;
+
+    public event UnityAction HealthChanged;
 
     private void Start()
     {
         _currentHealth = _maxHealth;
     }
 
-    public float CalculateHealth()
-    {
-        return (float)_currentHealth / _maxHealth;
-    }
-
     private void ChangeHealth(int amount)
     {
         _currentHealth = Mathf.Clamp(_currentHealth + amount, 0, _maxHealth);
-        OnHealthChanged.Invoke();
+        HealthChanged.Invoke();
     }
 
-    public void Heal()
+    public void Heal(int count)
     {
-        ChangeHealth(10);
+        ChangeHealth(count);
     }
 
-    public void Damage()
+    public void Damage(int count)
     {
-        ChangeHealth(-10);
+        ChangeHealth(count);
     }
 }
 

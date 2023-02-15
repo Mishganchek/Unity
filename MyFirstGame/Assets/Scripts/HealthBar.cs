@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,29 +7,37 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private Player _player;
     [SerializeField] private Slider _slider;
 
-    private float _speed= 0.1f;
-    private float _currentValue;
-    private float _targetValue;
+    private float _speed = 0.1f;
+    private Coroutine _coroutine;
 
-    private void Start()
+    private float NormalizedHealth => _player.CurrentHealth / _player.MaxHealth;
+
+    private void OnEnable()
     {
-        _currentValue = _slider.value;
-        _targetValue = _slider.value;
-        _player.OnHealthChanged.AddListener(UpdateValue);
+        _player.HealthChanged +=UpdateValue;
     }
 
-    public void Update()
+    private void OnDisable()
     {
-        if (_currentValue != _targetValue)
-        {
-            _currentValue = Mathf.MoveTowards(_currentValue, _targetValue, Time.deltaTime * _speed);
-            _slider.value = _currentValue;
-        }
+        _player.HealthChanged -= UpdateValue;
     }
 
     public void UpdateValue()
     {
-        _targetValue = _player.CalculateHealth();
-        
+        if (_coroutine != null)
+        {
+            StopCoroutine(_coroutine);
+        }
+
+        _coroutine = StartCoroutine(ChangeValue(NormalizedHealth));
+    }
+
+    private IEnumerator ChangeValue(float target)
+    {
+        while (_slider.value != target)
+        {
+            _slider.value = Mathf.MoveTowards(_slider.value, target, Time.deltaTime * _speed);
+            yield return null;
+        }
     }
 }
